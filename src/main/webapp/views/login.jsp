@@ -23,11 +23,15 @@
     <form method="post" action="/part2_lesson2_war/login">
         <p><fmt:message key="tfl.message"/> </p>
         <br>
+        <div>
         <label><strong><fmt:message key="tfl.login"/></strong></label>
         <input type="text" name="login"/>
+        </div>
         <br>
+        <div>
         <label><strong><fmt:message key="tfl.password"/></strong></label>
         <input type="password" name="password"/>
+        </div>
         <br>
         <button type="submit"><fmt:message key="tfl.send.button"/></button>
     </form>

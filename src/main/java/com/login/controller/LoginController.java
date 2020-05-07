@@ -2,29 +2,33 @@ package com.login.controller;
 
 import com.login.repository.LoginRepository;
 import com.login.repository.LoginRepositoryImpl;
+import com.login.config.SpringConfig;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginController extends HttpServlet {
-    private LoginRepository loginRepository = new LoginRepositoryImpl();
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    LoginRepository loginRepository = context.getBean(LoginRepositoryImpl.class);
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String login = req.getParameter("login");
     String pass = req.getParameter("password");
-    String name = loginRepository.checkUser(login,pass);
-    if(name!=null){
+    List<String> name = loginRepository.checkUser(login,pass);
+    if(!name.isEmpty()){
         HttpSession httpSession = req.getSession();
-        httpSession.setAttribute("name",name);
+        httpSession.setAttribute("name",name.get(0));
         req.getRequestDispatcher("/views/loginSucsess.jsp").forward(req,resp);
     }else {
         req.getRequestDispatcher("/views/registr.jsp").forward(req,resp);

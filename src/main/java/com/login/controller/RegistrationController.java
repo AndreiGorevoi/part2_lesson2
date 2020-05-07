@@ -2,8 +2,10 @@ package com.login.controller;
 
 import com.login.repository.LoginRepository;
 import com.login.repository.LoginRepositoryImpl;
+import com.login.config.SpringConfig;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import javax.jws.WebService;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +16,8 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/registration")
 public class RegistrationController extends HttpServlet {
-    LoginRepository loginRepository = new LoginRepositoryImpl();
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private LoginRepository loginRepository = context.getBean(LoginRepositoryImpl.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/views/registr.jsp").forward(req,resp);
